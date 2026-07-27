@@ -17,9 +17,20 @@ This repository contains a collection of hands-on exercises and mini-projects fo
 
 ## Setup
 
-1. Create and activate a Python virtual environment.
-2. Install dependencies if needed.
-3. Run the scripts from the relevant folders.
+1. Create and activate a Python virtual environment:
+   ```bash
+   python -m venv .venv
+   .venv\Scripts\activate
+   ```
+2. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+3. Copy the example environment file and add your API key:
+   ```bash
+   copy .env.example .env
+   ```
+4. Run the scripts from the relevant folders.
 
 ## Notes
 
