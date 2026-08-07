@@ -37,7 +37,7 @@ This repository shows a strong working understanding of the following AI enginee
 
 This capstone project applies multi-agent orchestration to a treasury use case, with five specialized agents for aggregation, forecasting, funding recommendation, alerting, and governance commentary coordinated by a central orchestrator to monitor synthetic intraday cash positions and produce a governance-ready liquidity report.
 
-![Treasury, Liquidity, and Intraday Cash Management Day](CAPSTONE- Treasury, Liquidity & Intraday Cash Management Agent/Treasury_Liquidity_and_Intraday_Cash_mgmpy_ppt.pdf)
+![Treasury, Liquidity, and Intraday Cash Management Day](https://github.com/RahulKorde19/Agentic-AI-Projects/blob/main/CAPSTONE-%20Treasury%2C%20Liquidity%20%26%20Intraday%20Cash%20Management%20Agent/Treasury_Liquidity_and_Intraday_Cash_mgmpy_ppt.pdf)
 
 ![Treasury agent live demo](CAPSTONE-%20Treasury,%20Liquidity%20&%20Intraday%20Cash%20Management%20Agent/images%20for%20pdf/Screenshot%202026-08-06%20114810.png)
 
