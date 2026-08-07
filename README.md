@@ -2,7 +2,7 @@
 
 A hands-on portfolio of agentic AI engineering work focused on building, evaluating, and integrating LLM-powered systems. This repository demonstrates practical experience across prompt design, tool calling, retrieval, memory, orchestration, and multi-agent workflows.
 
-## Recruiter-Facing Summary
+## Summary
 
 This project collection showcases the ability to move from single-prompt experimentation to real agentic system design. It reflects work with:
 
