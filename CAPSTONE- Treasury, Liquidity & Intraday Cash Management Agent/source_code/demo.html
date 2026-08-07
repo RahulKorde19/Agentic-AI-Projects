@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Treasury Liquidity Agent Demo</title>
+  <style>
+    :root {
+      --bg: #07111f;
+      --panel: #0f172a;
+      --panel-2: #111c31;
+      --text: #e2e8f0;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
+      --accent-2: #818cf8;
+      --success: #34d399;
+      --warning: #f59e0b;
+      --danger: #fb7185;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: "Segoe UI", Arial, sans-serif; background: linear-gradient(135deg, var(--bg), #111827 70%); color: var(--text); }
+    .container { max-width: 1300px; margin: 0 auto; padding: 24px; }
+    .hero { background: linear-gradient(120deg, rgba(56,189,248,0.18), rgba(129,140,248,0.16)); border: 1px solid rgba(255,255,255,0.08); border-radius: 24px; padding: 28px; margin-bottom: 20px; box-shadow: 0 25px 70px rgba(0,0,0,0.25); }
+    .hero h1 { margin: 0 0 8px; font-size: 2rem; }
+    .hero p { color: var(--muted); font-size: 1rem; line-height: 1.6; }
+    .pill { display: inline-block; padding: 7px 12px; border-radius: 999px; font-size: 12px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 10px; }
+    .pill.live { background: rgba(56,189,248,0.2); color: #7dd3fc; }
+    .pill.sim { background: rgba(251,113,133,0.2); color: #fda4af; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-top: 18px; }
+    .card { background: rgba(15, 23, 42, 0.92); border: 1px solid rgba(255,255,255,0.08); border-radius: 18px; padding: 18px; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); }
+    .card h2, .card h3 { margin-top: 0; }
+    .metric { border-radius: 14px; padding: 12px; background: rgba(255,255,255,0.04); margin-bottom: 10px; }
+    .metric strong { display: block; font-size: 1.1rem; margin-bottom: 2px; }
+    .metric span { color: var(--muted); font-size: 0.92rem; }
+    .list { padding-left: 18px; color: var(--muted); line-height: 1.7; }
+    pre { margin: 0; background: #020617; color: #f8fafc; border-radius: 12px; padding: 14px; overflow-x: auto; font-size: 0.9rem; white-space: pre-wrap; word-break: break-word; }
+    .two-col { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 18px; }
+    .chip { display: inline-block; background: rgba(52,211,153,0.14); color: var(--success); border-radius: 999px; padding: 5px 10px; font-size: 0.78rem; font-weight: 700; margin-right: 6px; margin-bottom: 8px; }
+    .chip.warn { background: rgba(245,158,11,0.16); color: var(--warning); }
+    .controls { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; margin-top: 14px; }
+    .controls button, .controls select { border: 0; border-radius: 999px; padding: 10px 14px; font-size: 0.95rem; font-weight: 700; }
+    .controls button { background: linear-gradient(120deg, var(--accent), var(--accent-2)); color: white; cursor: pointer; }
+    .controls select { background: rgba(255,255,255,0.08); color: var(--text); }
+    .reasoning-panel { display: none; margin-top: 16px; background: rgba(2, 6, 23, 0.75); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 16px; }
+    .reasoning-step { padding: 12px; border-radius: 12px; background: rgba(255,255,255,0.04); margin-bottom: 10px; }
+    .reasoning-step h4 { margin: 0 0 6px; color: #bae6fd; }
+    .reasoning-step p { margin: 0; color: var(--muted); line-height: 1.6; }
+    .insight-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; margin-top: 12px; }
+    .insight-card { border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; padding: 14px; background: rgba(255,255,255,0.04); }
+    .insight-card h3 { margin-top: 0; margin-bottom: 8px; color: #bae6fd; }
+    .insight-card ul { margin: 0; padding-left: 18px; color: var(--muted); line-height: 1.7; }
+    .insight-badge { display: inline-block; padding: 4px 8px; border-radius: 999px; background: rgba(56,189,248,0.16); color: #7dd3fc; font-size: 0.75rem; font-weight: 700; margin-bottom: 8px; }
+    .code-block { margin-top: 10px; background: #020617; color: #f8fafc; padding: 10px 12px; border-radius: 10px; font-size: 0.85rem; overflow-x: auto; }
+    @media (max-width: 900px) { .two-col { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="hero">
+      <div class="pill live">Live Demo</div>
+      <h1>Treasury Liquidity &amp; Intraday Cash Management Agent</h1>
+      <p>This experience turns the backend treasury workflow into a polished story: it aggregates positions, forecasts shortfalls, recommends funding, raises alerts, and produces governance-ready commentary for a modern treasury desk.</p>
+      <div class="grid">
+        <div class="metric"><strong id="forecastTitle">Loading…</strong><span>Forecast</span></div>
+        <div class="metric"><strong id="recommendationTitle">Loading…</strong><span>Funding Recommendation</span></div>
+        <div class="metric"><strong id="alertTitle">Loading…</strong><span>Active Alerts</span></div>
+        <div class="metric"><strong id="commentaryTitle">Loading…</strong><span>Commentary Status</span></div>
+      </div>
+      <div class="controls">
+        <button id="reasoningBtn" type="button">Show backend reasoning</button>
+        <select id="reasoningMode">
+          <option value="executive">Executive explanation</option>
+          <option value="flow">Backend flow</option>
+          <option value="why">Why this result</option>
+        </select>
+      </div>
+      <div class="reasoning-panel" id="reasoningPanel"></div>
+    </div>
+
+    <div class="card" style="margin-top:18px;">
+      <div class="pill live">Agentic AI + OpenAI</div>
+      <h2>Where and how it was used</h2>
+      <div id="integrationContent">Loading implementation details…</div>
+    </div>
+
+    <div class="two-col">
+      <div class="card">
+        <div class="pill live">Capstone Narrative</div>
+        <h2>What the capstone was about</h2>
+        <p id="capstoneSummary">Loading project overview…</p>
+        <h3>What it demonstrates</h3>
+        <ul class="list" id="capstoneBullets"></ul>
+        <h3>Learning highlights</h3>
+        <div id="learningHighlights"></div>
+      </div>
+      <div class="card">
+        <div class="pill sim">Live Intelligence Snapshot</div>
+        <h2>Backend decisions</h2>
+        <div id="snapshotContent"></div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:18px;">
+      <div class="pill live">Live Output</div>
+      <h2>Live run results</h2>
+      <pre id="liveOutput">Loading live run…</pre>
+    </div>
+
+    <div class="card" style="margin-top:18px;">
+      <div class="pill sim">Stress / Simulation</div>
+      <h2>Scenario impact</h2>
+      <pre id="simulationOutput">Loading stress scenario…</pre>
+    </div>
+
+    <div class="card" style="margin-top:18px;">
+      <div class="pill live">Project Documentation</div>
+      <h2>README and notes</h2>
+      <pre id="docOutput">Loading documentation…</pre>
+    </div>
+  </div>
+
+  <script>
+    const forecastTitle = document.getElementById('forecastTitle');
+    const recommendationTitle = document.getElementById('recommendationTitle');
+    const alertTitle = document.getElementById('alertTitle');
+    const commentaryTitle = document.getElementById('commentaryTitle');
+    const capstoneSummary = document.getElementById('capstoneSummary');
+    const capstoneBullets = document.getElementById('capstoneBullets');
+    const learningHighlights = document.getElementById('learningHighlights');
+    const snapshotContent = document.getElementById('snapshotContent');
+    const integrationContent = document.getElementById('integrationContent');
+    const liveOutput = document.getElementById('liveOutput');
+    const simulationOutput = document.getElementById('simulationOutput');
+    const docOutput = document.getElementById('docOutput');
+    const reasoningBtn = document.getElementById('reasoningBtn');
+    const reasoningMode = document.getElementById('reasoningMode');
+    const reasoningPanel = document.getElementById('reasoningPanel');
+
+    function renderReasoning(reasoningData) {
+      if (!reasoningData) {
+        reasoningPanel.innerHTML = '<p>No reasoning data available.</p>';
+        return;
+      }
+
+      const mode = reasoningMode.value;
+      let html = '';
+
+      if (mode === 'executive') {
+        html = `
+          <div class="reasoning-step">
+            <h4>${reasoningData.executive?.title || 'How the backend thinks'}</h4>
+            <p>${reasoningData.executive?.message || 'The backend combines cash, obligations, market stress, and funding options to form a decision.'}</p>
+          </div>
+          ${ (reasoningData.why_outputs || []).map(item => `<div class="reasoning-step"><h4>Why this matters</h4><p>${item}</p></div>`).join('') }
+        `;
+      } else if (mode === 'flow') {
+        html = (reasoningData.steps || []).map(step => `
+          <div class="reasoning-step">
+            <h4>${step.title}</h4>
+            <p>${step.detail}</p>
+          </div>
+        `).join('');
+      } else {
+        html = (reasoningData.why_outputs || []).map(item => `
+          <div class="reasoning-step">
+            <h4>Why the output looks this way</h4>
+            <p>${item}</p>
+          </div>
+        `).join('');
+      }
+
+      reasoningPanel.innerHTML = html;
+    }
+
+    function renderIntegration(implementation) {
+      const agentic = implementation.agentic_ai || {};
+      const openai = implementation.openai_integration || {};
+
+      integrationContent.innerHTML = `
+        <div class="insight-grid">
+          <div class="insight-card">
+            <span class="insight-badge">Agentic AI</span>
+            <h3>${agentic.title || 'Multi-agent workflow'}</h3>
+            <ul>
+              ${(agentic.steps || []).map(step => `<li>${step}</li>`).join('')}
+            </ul>
+          </div>
+          <div class="insight-card">
+            <span class="insight-badge">OpenAI key</span>
+            <h3>${openai.title || 'Key usage in the backend'}</h3>
+            <ul>
+              ${(openai.steps || []).map(step => `<li>${step}</li>`).join('')}
+            </ul>
+            <div class="code-block">${openai.example || ''}</div>
+          </div>
+        </div>
+      `;
+    }
+
+    async function loadDemoData() {
+      try {
+        const response = await fetch('./demo_data.json');
+        if (!response.ok) throw new Error('demo_data.json not found');
+        const data = await response.json();
+
+        window.demoData = data;
+
+        const live = data.live || {};
+        const snapshot = live.snapshot || {};
+        const project = data.project || {};
+        const forecast = live.forecast || {};
+        const recommendation = live.recommendation || {};
+        const alerts = live.alerts || [];
+        const commentary = live.commentary || {};
+
+        forecastTitle.textContent = forecast.shortfall_projected ? `${forecast.amount || 0} ${forecast.currency || ''}` : 'No shortfall';
+        recommendationTitle.textContent = recommendation.recommended_source || 'None';
+        alertTitle.textContent = `${alerts.length} active`;
+        commentaryTitle.textContent = commentary.guardrail_passed ? 'Passed guardrails' : 'Fallback used';
+
+        capstoneSummary.textContent = project.summary || 'No project summary available.';
+        capstoneBullets.innerHTML = (project.what_it_demonstrates || []).map(item => `<li>${item}</li>`).join('');
+        learningHighlights.innerHTML = (project.learning_highlights || []).map(item => `<div class="chip">${item}</div>`).join('');
+
+        snapshotContent.innerHTML = `
+          <div class="metric"><strong>${snapshot.shortfall_projected ? 'Shortfall projected' : 'No shortfall'}</strong><span>Forecast status</span></div>
+          <div class="metric"><strong>${snapshot.estimated_time_to_breach_minutes || 'n/a'} mins</strong><span>Estimated breach window</span></div>
+          <div class="metric"><strong>${snapshot.recommended_source || 'No recommendation'}</strong><span>Recommended funding source</span></div>
+          <div class="metric"><strong>${snapshot.alert_count || 0} alerts</strong><span>Threshold monitoring state</span></div>
+          <div class="metric"><strong>${snapshot.guardrail_passed ? 'Passed' : 'Fallback'}</strong><span>Commentary guardrails</span></div>
+        `;
+
+        liveOutput.textContent = JSON.stringify(live, null, 2);
+        simulationOutput.textContent = JSON.stringify(data.simulation, null, 2);
+        docOutput.textContent = JSON.stringify(project.documentation || {}, null, 2);
+        renderIntegration(data.implementation || {});
+        renderReasoning(data.reasoning || {});
+      } catch (error) {
+        liveOutput.textContent = 'Unable to load live data. Run the Python demo first to generate demo_data.json.';
+        simulationOutput.textContent = 'No simulation data available yet.';
+        docOutput.textContent = 'Documentation unavailable.';
+      }
+    }
+
+    reasoningBtn.addEventListener('click', () => {
+      const isVisible = reasoningPanel.style.display === 'block';
+      reasoningPanel.style.display = isVisible ? 'none' : 'block';
+      reasoningBtn.textContent = isVisible ? 'Show backend reasoning' : 'Hide backend reasoning';
+    });
+
+    reasoningMode.addEventListener('change', () => {
+      const data = window.demoData || {};
+      renderReasoning(data.reasoning || {});
+      if (reasoningPanel.style.display !== 'block') {
+        reasoningPanel.style.display = 'block';
+        reasoningBtn.textContent = 'Hide backend reasoning';
+      }
+    });
+
+    loadDemoData();
+  </script>
+</body>
+</html>

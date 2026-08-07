@@ -1,0 +1,4 @@
+question,correct,coverage,latency_s
+What are three benefits of the Python li...,1,1.0,3.18
+Name two risks of hardcoding an API key ...,1,0.0,1.25
+What does a RAG system do in two steps?...,1,1.0,0.97

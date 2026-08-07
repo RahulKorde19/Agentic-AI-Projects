@@ -30,8 +30,7 @@ import chromadb, os
 
 from openai import OpenAI
 
-os.environ["OPENAI_API_KEY"] = "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"
-
+os.environ["OPENAI_API_KEY"] = "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"
 client = OpenAI()
 
  

@@ -1,0 +1,525 @@
+{
+  "generated_at": "2026-08-06T11:36:37",
+  "implementation": {
+    "agentic_ai": {
+      "title": "Multi-agent orchestration",
+      "steps": [
+        "The orchestrator coordinates a cash-position agent, a forecasting agent, a funding-recommendation agent, an alerting agent, and a commentary agent.",
+        "Each agent specializes in one part of the treasury decision, so the workflow behaves like an agentic system rather than a single monolithic script.",
+        "The output from one step feeds the next, which is how the system turns raw mock treasury data into an actionable recommendation."
+      ]
+    },
+    "openai_integration": {
+      "title": "OpenAI key and model usage",
+      "steps": [
+        "The backend loads the repo-root .env file with python-dotenv so the OpenAI key is available at runtime.",
+        "Each LLM-enabled agent reads OPENAI_API_KEY and creates an OpenAI client with that key.",
+        "The agents call gpt-4o-mini with structured prompts to generate a forecast, recommend funding, or draft commentary.",
+        "If the key is missing or the model response is invalid, the system falls back to conservative synthetic output instead of breaking."
+      ],
+      "example": "OpenAI(api_key=api_key) -> client.chat.completions.create(model='gpt-4o-mini', response_format={'type': 'json_object'})"
+    }
+  },
+  "project": {
+    "title": "Treasury Liquidity & Intraday Cash Management Agent",
+    "summary": "A capstone demo showing how an agentic workflow can monitor cash positions, forecast liquidity shortfalls, recommend funding, trigger alerts, and generate governance commentary.",
+    "what_it_demonstrates": [
+      "Structured treasury data aggregation from mock cash, nostro, collateral, and settlement data.",
+      "Pipeline orchestration across forecasting, funding, alerting, and commentary agents.",
+      "Guardrails and graceful fallbacks when model responses are unavailable or schema-invalid.",
+      "A polished frontend experience that turns backend reasoning into a recruiter-friendly demo."
+    ],
+    "learning_highlights": [
+      "Prompted LLMs for JSON-structured treasury reasoning.",
+      "Used modular agents that can be swapped for real market data or production services.",
+      "Built a resilient orchestration loop with translation from agent output to visible business actions.",
+      "Connected backend analysis to a presentation layer for stakeholder storytelling."
+    ],
+    "documentation": {
+      "README.md": "# Treasury Liquidity Agent Demo\n\n## Create and activate a virtual environment\n\n```bash\npython -m venv .venv\nsource .venv/bin/activate\n# Windows PowerShell:\n# .venv\\Scripts\\Activate.ps1\n```\n\n## Install dependencies\n\n```bash\npip install -r requirements.txt\n```\n\n## Set your API key\n\n```bash\nexport OPENAI_API_KEY=your_key_here\n# Windows PowerShell:\n# $env:OPENAI_API_KEY=\"your_key_here\"\n```\n\n## Sanity check\n\n```bash\npython eval_harness.py\n```\n\n## Run the terminal demo\n\n```bash\npython main.py\n```\n\n## Run a stress scenario\n\n```bash\npython main.py --scenario delayed_settlement\npython main.py --scenario large_withdrawal --amount 1000000\n```\n\n## Open the HTML demo\n\nOpen [demo.html](demo.html) directly in a browser, or serve the folder with:\n\n```bash\npython -m http.server 8000\n```\n"
+    }
+  },
+  "reasoning": {
+    "executive": {
+      "title": "Why the backend produced this result",
+      "message": "The system saw a near-term funding gap because obligations were larger than available liquidity, so it recommended a short-term funding action and flagged the risk in a governance-friendly way."
+    },
+    "steps": [
+      {
+        "title": "1. Data aggregation",
+        "detail": "The cash_position_agent combined mock cash balances, nostro positions, funding gaps, collateral movements, settlement dates, and market indicators into one structured treasury snapshot."
+      },
+      {
+        "title": "2. Forecasting",
+        "detail": "The forecasting_agent compared obligations due against available liquidity and projected that the balance would become insufficient before the next settlement window."
+      },
+      {
+        "title": "3. Funding recommendation",
+        "detail": "The funding_recommendation_agent selected an Intraday Credit Line because it can cover the shortfall quickly and fits the urgency of the projected breach."
+      },
+      {
+        "title": "4. Alerting",
+        "detail": "The alerting_agent raised concerns because the funding gap threshold and the repo-rate spread threshold were both breached."
+      },
+      {
+        "title": "5. Commentary",
+        "detail": "The commentary_agent translated the quantitative output into a concise desk note so a treasury manager can understand what happened and why."
+      }
+    ],
+    "why_outputs": [
+      "The forecast is positive for a shortfall because the available liquidity is lower than the required obligations for account acct-001.",
+      "The funding recommendation is an Intraday Credit Line because it is designed for fast, short-duration liquidity support and can cover the gap without adding unnecessary structure.",
+      "The alert count is two because both the funding gap and repo-rate spread thresholds are active, which signals pressure from both funding and market conditions.",
+      "The commentary is intentionally conservative because the system is showing a guardrailed business explanation rather than over-claiming certainty from the model output."
+    ]
+  },
+  "live": {
+    "status": "live_baseline",
+    "summary": "This is the baseline run for the treasury liquidity workflow.",
+    "snapshot": {
+      "shortfall_projected": true,
+      "forecast_amount": 500000.0,
+      "forecast_currency": "USD",
+      "estimated_time_to_breach_minutes": 120,
+      "recommended_source": "Intraday Credit Line",
+      "recommended_amount": 500000,
+      "alert_count": 2,
+      "commentary": "Liquidity status: forecast shortfall=yes; active alerts=2.",
+      "guardrail_passed": false,
+      "agent_count": 5
+    },
+    "aggregated_positions": {
+      "cash_positions": [
+        {
+          "account_id": "acct-001",
+          "currency": "USD",
+          "balance": 4500000.0,
+          "timestamp": "2026-08-06T12:00:00"
+        },
+        {
+          "account_id": "acct-002",
+          "currency": "EUR",
+          "balance": 2800000.0,
+          "timestamp": "2026-08-06T12:00:00"
+        },
+        {
+          "account_id": "acct-003",
+          "currency": "GBP",
+          "balance": 1200000.0,
+          "timestamp": "2026-08-06T12:00:00"
+        },
+        {
+          "account_id": "acct-004",
+          "currency": "USD",
+          "balance": 900000.0,
+          "timestamp": "2026-08-06T12:00:00"
+        }
+      ],
+      "nostro_by_currency": {
+        "USD": 3900000.0,
+        "EUR": 1800000.0,
+        "GBP": 960000.0
+      },
+      "funding_gaps": [
+        {
+          "account_id": "acct-001",
+          "obligations_due": 5000000.0,
+          "available_liquidity": 4500000.0,
+          "timestamp": "2026-08-06T12:00:00"
+        },
+        {
+          "account_id": "acct-002",
+          "obligations_due": 1800000.0,
+          "available_liquidity": 2800000.0,
+          "timestamp": "2026-08-06T12:00:00"
+        },
+        {
+          "account_id": "acct-003",
+          "obligations_due": 1300000.0,
+          "available_liquidity": 1200000.0,
+          "timestamp": "2026-08-06T12:00:00"
+        }
+      ],
+      "collateral_movements": [
+        {
+          "movement_id": "col-001",
+          "direction": "in",
+          "amount": 400000.0,
+          "currency": "USD",
+          "settlement_time": "2026-08-06T14:00:00"
+        },
+        {
+          "movement_id": "col-002",
+          "direction": "out",
+          "amount": 150000.0,
+          "currency": "EUR",
+          "settlement_time": null
+        },
+        {
+          "movement_id": "col-003",
+          "direction": "in",
+          "amount": 90000.0,
+          "currency": "GBP",
+          "settlement_time": "2026-08-06T11:00:00"
+        }
+      ],
+      "settlement_timeline": [
+        {
+          "obligation_id": "sett-003",
+          "account_id": "acct-003",
+          "amount": 220000.0,
+          "currency": "GBP",
+          "due_time": "2026-08-06T11:00:00",
+          "overdue": true
+        },
+        {
+          "obligation_id": "sett-001",
+          "account_id": "acct-001",
+          "amount": 1800000.0,
+          "currency": "USD",
+          "due_time": "2026-08-06T14:00:00",
+          "overdue": false
+        },
+        {
+          "obligation_id": "sett-004",
+          "account_id": "acct-001",
+          "amount": 650000.0,
+          "currency": "USD",
+          "due_time": "2026-08-06T14:00:00",
+          "overdue": false
+        },
+        {
+          "obligation_id": "sett-002",
+          "account_id": "acct-002",
+          "amount": 700000.0,
+          "currency": "EUR",
+          "due_time": "2026-08-06T16:00:00",
+          "overdue": false
+        }
+      ],
+      "market_indicators": [
+        {
+          "indicator_name": "repo_rate_spread",
+          "value": 0.55,
+          "threshold_reference": 0.4,
+          "market_condition": "stressed"
+        },
+        {
+          "indicator_name": "fx_volatility",
+          "value": 0.18,
+          "threshold_reference": 0.2,
+          "market_condition": "normal"
+        }
+      ]
+    },
+    "forecast": {
+      "shortfall_projected": true,
+      "amount": 500000.0,
+      "currency": "USD",
+      "estimated_time_to_breach_minutes": 120,
+      "rationale": "Account acct-001 has obligations due of 5,000,000 USD but only available liquidity of 4,500,000 USD, leading to a projected shortfall of 500,000 USD. The nearest obligation is due at 14:00, and with collateral movements also considered, liquidity risk may be realized after the movement timeline is evaluated."
+    },
+    "recommendation": {
+      "action_needed": "Secure funding",
+      "recommended_source": "Intraday Credit Line",
+      "amount": 500000,
+      "currency": "USD",
+      "rationale": "The Intraday Credit Line has an available amount of 5,000,000 USD, which can fully cover the projected shortfall of 500,000 USD. Utilizing this source will mitigate the liquidity risk in a timely manner before the obligation due at 14:00."
+    },
+    "alerts": [
+      {
+        "metric": "funding_gap",
+        "account": "acct-002",
+        "threshold": 100000.0,
+        "actual_value": 1000000.0
+      },
+      {
+        "metric": "repo_rate_spread",
+        "account": null,
+        "threshold": 0.4,
+        "actual_value": 0.55
+      }
+    ],
+    "alert_state": {
+      "alerts": {
+        "funding_gap:acct-002": {
+          "metric": "funding_gap",
+          "account_id": "acct-002",
+          "threshold": 100000.0,
+          "value": 1000000.0
+        },
+        "indicator:repo_rate_spread": {
+          "metric": "repo_rate_spread",
+          "threshold": 0.4,
+          "value": 0.55
+        }
+      },
+      "config_gaps": []
+    },
+    "commentary": {
+      "commentary": "Liquidity status: forecast shortfall=yes; active alerts=2.",
+      "source": "template_fallback",
+      "guardrail_passed": false
+    },
+    "logs": [
+      {
+        "agent": "cash_position_agent",
+        "timestamp": "2026-08-06T11:36:25",
+        "input_summary": "{\"source\": \"mock_data\"}",
+        "output_summary": "{\"cash_positions\": [{\"account_id\": \"acct-001\", \"currency\": \"USD\", \"balance\": 4500000.0, \"timestamp\": \"2026-08-06T12:00:00\"}, {\"account_id\": \"acct-002\", \"currency\": \"EUR\", \"balance\": 2800000.0, \"timest"
+      },
+      {
+        "agent": "forecasting_agent",
+        "timestamp": "2026-08-06T11:36:32",
+        "input_summary": "{\"cash_positions\": [{\"account_id\": \"acct-001\", \"currency\": \"USD\", \"balance\": 4500000.0, \"timestamp\": \"2026-08-06T12:00:00\"}, {\"account_id\": \"acct-002\", \"currency\": \"EUR\", \"balance\": 2800000.0, \"timest",
+        "output_summary": "{\"shortfall_projected\": true, \"amount\": 500000.0, \"currency\": \"USD\", \"estimated_time_to_breach_minutes\": 120, \"rationale\": \"Account acct-001 has obligations due of 5,000,000 USD but only available liq"
+      },
+      {
+        "agent": "funding_recommendation_agent",
+        "timestamp": "2026-08-06T11:36:34",
+        "input_summary": "{\"shortfall_projected\": true, \"amount\": 500000.0, \"currency\": \"USD\", \"estimated_time_to_breach_minutes\": 120, \"rationale\": \"Account acct-001 has obligations due of 5,000,000 USD but only available liq",
+        "output_summary": "{\"action_needed\": \"Secure funding\", \"recommended_source\": \"Intraday Credit Line\", \"amount\": 500000, \"currency\": \"USD\", \"rationale\": \"The Intraday Credit Line has an available amount of 5,000,000 USD, "
+      },
+      {
+        "agent": "alerting_agent",
+        "timestamp": "2026-08-06T11:36:34",
+        "input_summary": "{\"threshold_config\": {\"funding_gap\": 100000.0, \"repo_rate_spread\": 0.4, \"fx_volatility\": 0.2}, \"previous_alert_state\": {}}",
+        "output_summary": "{\"alerts\": [{\"metric\": \"funding_gap\", \"account\": \"acct-002\", \"threshold\": 100000.0, \"actual_value\": 1000000.0}, {\"metric\": \"repo_rate_spread\", \"account\": null, \"threshold\": 0.4, \"actual_value\": 0.55}]"
+      },
+      {
+        "agent": "commentary_agent",
+        "timestamp": "2026-08-06T11:36:37",
+        "input_summary": "{\"forecast\": {\"shortfall_projected\": true, \"amount\": 500000.0, \"currency\": \"USD\", \"estimated_time_to_breach_minutes\": 120, \"rationale\": \"Account acct-001 has obligations due of 5,000,000 USD but only ",
+        "output_summary": "{\"commentary\": \"Liquidity status: forecast shortfall=yes; active alerts=2.\", \"source\": \"template_fallback\", \"guardrail_passed\": false}"
+      }
+    ],
+    "raw_payload": {
+      "run_timestamp": "2026-08-06T11:36:37",
+      "aggregated_positions": {
+        "cash_positions": [
+          {
+            "account_id": "acct-001",
+            "currency": "USD",
+            "balance": 4500000.0,
+            "timestamp": "2026-08-06T12:00:00"
+          },
+          {
+            "account_id": "acct-002",
+            "currency": "EUR",
+            "balance": 2800000.0,
+            "timestamp": "2026-08-06T12:00:00"
+          },
+          {
+            "account_id": "acct-003",
+            "currency": "GBP",
+            "balance": 1200000.0,
+            "timestamp": "2026-08-06T12:00:00"
+          },
+          {
+            "account_id": "acct-004",
+            "currency": "USD",
+            "balance": 900000.0,
+            "timestamp": "2026-08-06T12:00:00"
+          }
+        ],
+        "nostro_by_currency": {
+          "USD": 3900000.0,
+          "EUR": 1800000.0,
+          "GBP": 960000.0
+        },
+        "funding_gaps": [
+          {
+            "account_id": "acct-001",
+            "obligations_due": 5000000.0,
+            "available_liquidity": 4500000.0,
+            "timestamp": "2026-08-06T12:00:00"
+          },
+          {
+            "account_id": "acct-002",
+            "obligations_due": 1800000.0,
+            "available_liquidity": 2800000.0,
+            "timestamp": "2026-08-06T12:00:00"
+          },
+          {
+            "account_id": "acct-003",
+            "obligations_due": 1300000.0,
+            "available_liquidity": 1200000.0,
+            "timestamp": "2026-08-06T12:00:00"
+          }
+        ],
+        "collateral_movements": [
+          {
+            "movement_id": "col-001",
+            "direction": "in",
+            "amount": 400000.0,
+            "currency": "USD",
+            "settlement_time": "2026-08-06T14:00:00"
+          },
+          {
+            "movement_id": "col-002",
+            "direction": "out",
+            "amount": 150000.0,
+            "currency": "EUR",
+            "settlement_time": null
+          },
+          {
+            "movement_id": "col-003",
+            "direction": "in",
+            "amount": 90000.0,
+            "currency": "GBP",
+            "settlement_time": "2026-08-06T11:00:00"
+          }
+        ],
+        "settlement_timeline": [
+          {
+            "obligation_id": "sett-003",
+            "account_id": "acct-003",
+            "amount": 220000.0,
+            "currency": "GBP",
+            "due_time": "2026-08-06T11:00:00",
+            "overdue": true
+          },
+          {
+            "obligation_id": "sett-001",
+            "account_id": "acct-001",
+            "amount": 1800000.0,
+            "currency": "USD",
+            "due_time": "2026-08-06T14:00:00",
+            "overdue": false
+          },
+          {
+            "obligation_id": "sett-004",
+            "account_id": "acct-001",
+            "amount": 650000.0,
+            "currency": "USD",
+            "due_time": "2026-08-06T14:00:00",
+            "overdue": false
+          },
+          {
+            "obligation_id": "sett-002",
+            "account_id": "acct-002",
+            "amount": 700000.0,
+            "currency": "EUR",
+            "due_time": "2026-08-06T16:00:00",
+            "overdue": false
+          }
+        ],
+        "market_indicators": [
+          {
+            "indicator_name": "repo_rate_spread",
+            "value": 0.55,
+            "threshold_reference": 0.4,
+            "market_condition": "stressed"
+          },
+          {
+            "indicator_name": "fx_volatility",
+            "value": 0.18,
+            "threshold_reference": 0.2,
+            "market_condition": "normal"
+          }
+        ]
+      },
+      "forecast": {
+        "shortfall_projected": true,
+        "amount": 500000.0,
+        "currency": "USD",
+        "estimated_time_to_breach_minutes": 120,
+        "rationale": "Account acct-001 has obligations due of 5,000,000 USD but only available liquidity of 4,500,000 USD, leading to a projected shortfall of 500,000 USD. The nearest obligation is due at 14:00, and with collateral movements also considered, liquidity risk may be realized after the movement timeline is evaluated."
+      },
+      "recommendation": {
+        "action_needed": "Secure funding",
+        "recommended_source": "Intraday Credit Line",
+        "amount": 500000,
+        "currency": "USD",
+        "rationale": "The Intraday Credit Line has an available amount of 5,000,000 USD, which can fully cover the projected shortfall of 500,000 USD. Utilizing this source will mitigate the liquidity risk in a timely manner before the obligation due at 14:00."
+      },
+      "alerts": [
+        {
+          "metric": "funding_gap",
+          "account": "acct-002",
+          "threshold": 100000.0,
+          "actual_value": 1000000.0
+        },
+        {
+          "metric": "repo_rate_spread",
+          "account": null,
+          "threshold": 0.4,
+          "actual_value": 0.55
+        }
+      ],
+      "cleared_alerts": [],
+      "alert_state": {
+        "alerts": {
+          "funding_gap:acct-002": {
+            "metric": "funding_gap",
+            "account_id": "acct-002",
+            "threshold": 100000.0,
+            "value": 1000000.0
+          },
+          "indicator:repo_rate_spread": {
+            "metric": "repo_rate_spread",
+            "threshold": 0.4,
+            "value": 0.55
+          }
+        },
+        "config_gaps": []
+      },
+      "commentary": {
+        "commentary": "Liquidity status: forecast shortfall=yes; active alerts=2.",
+        "source": "template_fallback",
+        "guardrail_passed": false
+      },
+      "logs": [
+        {
+          "agent": "cash_position_agent",
+          "timestamp": "2026-08-06T11:36:25",
+          "input_summary": "{\"source\": \"mock_data\"}",
+          "output_summary": "{\"cash_positions\": [{\"account_id\": \"acct-001\", \"currency\": \"USD\", \"balance\": 4500000.0, \"timestamp\": \"2026-08-06T12:00:00\"}, {\"account_id\": \"acct-002\", \"currency\": \"EUR\", \"balance\": 2800000.0, \"timest"
+        },
+        {
+          "agent": "forecasting_agent",
+          "timestamp": "2026-08-06T11:36:32",
+          "input_summary": "{\"cash_positions\": [{\"account_id\": \"acct-001\", \"currency\": \"USD\", \"balance\": 4500000.0, \"timestamp\": \"2026-08-06T12:00:00\"}, {\"account_id\": \"acct-002\", \"currency\": \"EUR\", \"balance\": 2800000.0, \"timest",
+          "output_summary": "{\"shortfall_projected\": true, \"amount\": 500000.0, \"currency\": \"USD\", \"estimated_time_to_breach_minutes\": 120, \"rationale\": \"Account acct-001 has obligations due of 5,000,000 USD but only available liq"
+        },
+        {
+          "agent": "funding_recommendation_agent",
+          "timestamp": "2026-08-06T11:36:34",
+          "input_summary": "{\"shortfall_projected\": true, \"amount\": 500000.0, \"currency\": \"USD\", \"estimated_time_to_breach_minutes\": 120, \"rationale\": \"Account acct-001 has obligations due of 5,000,000 USD but only available liq",
+          "output_summary": "{\"action_needed\": \"Secure funding\", \"recommended_source\": \"Intraday Credit Line\", \"amount\": 500000, \"currency\": \"USD\", \"rationale\": \"The Intraday Credit Line has an available amount of 5,000,000 USD, "
+        },
+        {
+          "agent": "alerting_agent",
+          "timestamp": "2026-08-06T11:36:34",
+          "input_summary": "{\"threshold_config\": {\"funding_gap\": 100000.0, \"repo_rate_spread\": 0.4, \"fx_volatility\": 0.2}, \"previous_alert_state\": {}}",
+          "output_summary": "{\"alerts\": [{\"metric\": \"funding_gap\", \"account\": \"acct-002\", \"threshold\": 100000.0, \"actual_value\": 1000000.0}, {\"metric\": \"repo_rate_spread\", \"account\": null, \"threshold\": 0.4, \"actual_value\": 0.55}]"
+        },
+        {
+          "agent": "commentary_agent",
+          "timestamp": "2026-08-06T11:36:37",
+          "input_summary": "{\"forecast\": {\"shortfall_projected\": true, \"amount\": 500000.0, \"currency\": \"USD\", \"estimated_time_to_breach_minutes\": 120, \"rationale\": \"Account acct-001 has obligations due of 5,000,000 USD but only ",
+          "output_summary": "{\"commentary\": \"Liquidity status: forecast shortfall=yes; active alerts=2.\", \"source\": \"template_fallback\", \"guardrail_passed\": false}"
+        }
+      ]
+    }
+  },
+  "simulation": {
+    "status": "stress_test",
+    "summary": "A stress scenario shows how the workflow behaves when settlement timing becomes delayed or funding demand spikes.",
+    "scenario": {
+      "live_output": false,
+      "simulation": {
+        "scenario": "delayed_settlement",
+        "hours_delay": 2,
+        "simulated": true,
+        "forecast": {
+          "shortfall_projected": true,
+          "amount": 500000.0,
+          "currency": "USD",
+          "estimated_time_to_breach_minutes": 180,
+          "rationale": "Account acct-001 has available liquidity of $4,500,000 and obligations due of $5,000,000, resulting in a projected shortfall of $500,000 due by 16:00. Additionally, considering the market conditions, there is some liquidity risk due to the stressed repo rate spread."
+        }
+      }
+    }
+  }
+}

@@ -11,6 +11,7 @@ This project collection showcases the ability to move from single-prompt experim
 - Embedding-based retrieval and vector search
 - Tool-calling and external function integration
 - Multi-agent coordination using CrewAI
+- Multi-agent orchestration with guarded, self-checking workflow design
 - Standardized MCP server tooling for local AI workflows
 
 The codebase is not just a set of notebooks or demos; it represents a progression of learning from foundational prompting patterns to more advanced agentic systems that emphasize interoperability, traceability, and practical use of LLMs in software workflows.
@@ -27,9 +28,20 @@ This repository shows a strong working understanding of the following AI enginee
 - Chunking strategies and retrieval quality comparison
 - MCP server design for exposing reusable AI tools
 - Multi-agent task decomposition and collaboration using CrewAI
+- Multi-agent orchestration with guardrail-based self-verification
 - End-to-end execution traces for real workflow visibility
 
 ## Featured Work
+
+### 6. Treasury Liquidity & Intraday Cash Management Agent (Capstone)
+
+This capstone project applies multi-agent orchestration to a treasury use case, with five specialized agents for aggregation, forecasting, funding recommendation, alerting, and governance commentary coordinated by a central orchestrator to monitor synthetic intraday cash positions and produce a governance-ready liquidity report.
+
+![Treasury agent live demo](CAPSTONE-%20Treasury,%20Liquidity%20&%20Intraday%20Cash%20Management%20Agent/images%20for%20pdf/Screenshot%202026-08-06%20114810.png)
+
+![Treasury agent backend decisions](CAPSTONE-%20Treasury,%20Liquidity%20&%20Intraday%20Cash%20Management%20Agent/images%20for%20pdf/Screenshot%202026-08-06%20114821.png)
+
+This work highlights a full multi-agent pipeline with a central orchestrator, tool-calling with grounded and constrained outputs, a self-verifying guardrail agent that checks its own generated text against source data before display, graceful degradation design through per-agent fallback logic, and a fully spec-driven build process from PRD through acceptance criteria to source code. See the [full project README](CAPSTONE-%20Treasury,%20Liquidity%20&%20Intraday%20Cash%20Management%20Agent/README.md) for the complete architecture write-up, presentation deck, and live demo walkthrough.
 
 ### 1. MCP Memory Server
 
@@ -73,6 +85,16 @@ A key part of the learning journey in this repository is understanding agent mem
 
 ![Short-term and long-term memory](Result%20Images/Screenshot%202026-08-01%20144236.png)
 
+### 6. Treasury Liquidity & Intraday Cash Management Agent (Capstone)
+
+This capstone project applies multi-agent orchestration to a treasury use case, with five specialized agents for aggregation, forecasting, funding recommendation, alerting, and governance commentary coordinated by a central orchestrator to monitor synthetic intraday cash positions and produce a governance-ready liquidity report.
+
+![Treasury agent live demo](CAPSTONE-%20Treasury,%20Liquidity%20&%20Intraday%20Cash%20Management%20Agent/images%20for%20pdf/Screenshot%202026-08-06%20114810.png)
+
+![Treasury agent backend decisions](CAPSTONE-%20Treasury,%20Liquidity%20&%20Intraday%20Cash%20Management%20Agent/images%20for%20pdf/Screenshot%202026-08-06%20114821.png)
+
+This work highlights a full multi-agent pipeline with a central orchestrator, tool-calling with grounded and constrained outputs, a self-verifying guardrail agent that checks its own generated text against source data before display, graceful degradation design through per-agent fallback logic, and a fully spec-driven build process from PRD through acceptance criteria to source code. See the [full project README](CAPSTONE-%20Treasury,%20Liquidity%20&%20Intraday%20Cash%20Management%20Agent/README.md) for the complete architecture write-up, presentation deck, and live demo walkthrough.
+
 ## What I Learned
 
 Across this codebase, the most valuable takeaways are:
@@ -104,6 +126,7 @@ Across this codebase, the most valuable takeaways are:
 - Structured outputs and tool calling
 - Chain-of-thought output contracts
 - Guardrails and evaluation harnesses
+- Treasury/liquidity agentic workflows
 - Geometry, semantic search, and keyword search
 - RAG and memory systems
 - Agentic task planning and external tool integration
